@@ -1,38 +1,44 @@
 #  Android开发笔记
 
----
-
 ## Activity篇
-
----
 
 ### 生命周期(LifeCycle)
 
 ---
 
-- **onCreate()** 在Activity被创建的时候被调用。
-- **onRstart()** 在Activity重新被启动的时候被调用。
-- **onStart()** 在Activity可见的时候被调用。
-- **onStop()**  在Activity不可见的时候被调用。
-- **onResum()  **在Activity可交互(interfating)的时候被调用。
-- **onPause()**  在Activity不可交互的时候被调用。
-- **onDesdroy() ** 在Activity被销毁的时候被调用。
+- `onCreate() `在Activity被创建的时候被调用。
+- `onRstart()` 在Activity重新被启动的时候被调用。
+- `onStart() `在Activity可见的时候被调用。
+- `onStop() ` 在Activity不可见的时候被调用。
+- `onResum() ` 在Activity可交互(interfating)的时候被调用。
+- `onPause() ` 在Activity不可交互的时候被调用。
+- `onDesdroy()  `在Activity被销毁的时候被调用。
 
-### 绑定ui 
+### 绑定ui
 
 ---
 
 > 为activity绑定视图是通过setContontView()方法来实现的。
 >
 > setContontView()的参数可以是int类型(xml文件的id),也可以是一个view对象。
->
-> 
+
+
 
 ### Activity之间的跳转
 
-Activity之间的跳转需要Intent来实现
+---
 
-**代码实例**
+Activity的跳转分为`隐式跳转`和`显示跳转`两种方式，我们可以根据自己的业务需求选择合适的跳转方式；
+
+#### 显示跳转：
+
+Activity之间的跳转需要调用Activity的`startActivity()`方法来实现，调用`startActivity()`方法需要传入`Intent`对象，我们应该在`Intent`对象当中指明跳转的详细信息；
+
+#### 隐式跳转：
+
+
+
+#### **代码实例**
 
 ```java
 Intent intent = new Intent(MainActivity.this,SecondActivity.class);
@@ -309,23 +315,27 @@ Action Button点击事件监听的监听是通过重写Activity的onOptionsItemS
 
 ## 问题总结
 
-#### **1.Android8.0以后无法使用HTTP协议**
+### 1. Android8.0以后无法使用HTTP协议
 
-报错：java.net.SocketException: socket failed: EPERM (Operation not permitted)
+---
 
-解决方法
+报错详情：java.net.SocketException: socket failed: EPERM (Operation not permitted)
 
-1. 采用HTTPS协议
+**解决方法：**
+
+1. 后台采用HTTPS协议
 2. 安卓targetSdkVersion 降到28以下
 3. 强制更改网络配置
 
-强制更改网络配置：
 
-step1：在res目录下新建xml目录，在该目录下新建一个xml文件，名字随意，这里以network_security_config.xml为例。
+
+**强制更改网络配置**
+
+`step1：`在res目录下新建xml目录，在xml目录下新建一个xml文件，名字随意，这里以network_security_config.xml为例进行演示。
 
 ![Problem_network](img/Problem_network_01.bmp)
 
-step2：在network_security_config.xml文件里添加以下内容
+`step2：`在network_security_config.xml文件里添加以下内容
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -334,9 +344,9 @@ step2：在network_security_config.xml文件里添加以下内容
 </network-security-config>
 ```
 
-step3：在AndroidManifest.xml里的application标签添加android:networkSecurityConfig属性，值为：@xml/network_security_config
+`step3：`在AndroidManifest.xml里的application标签添加android:networkSecurityConfig属性，值为：@xml/network_security_config
 
-​			"@xml/network_security_config"表示对xml目录下的network_security_config.xml文件的引用
+"@xml/network_security_config"表示对xml目录下的network_security_config.xml文件的引用
 
 ```xml
 <application
@@ -347,12 +357,21 @@ step3：在AndroidManifest.xml里的application标签添加android:networkSecuri
 
 
 
-step4：一定要把原来的app在安卓设备上**卸载重装**
+`step4：`一定要把原来的app在安卓设备上`卸载重装`, 否则会失效；
 
-#### 2.java.net.SocketException: socket failed: EPERM (Operation not permitted)
+
+
+### 2.java.net.SocketException: socket failed: EPERM (Operation not permitted)
+
+---
 
 这个异常通常在一开始没有给应用添加访问网络权限，在添加权限后重新编译运行时产生的。
 
 解决办法：卸载安卓设备上的应用程序重新编译运行。
 
-#### 3.在LiveData的回调里getActivity()会报空指针异常
+
+
+### 3.在LiveData的回调里getActivity()会报空指针异常
+
+---
+

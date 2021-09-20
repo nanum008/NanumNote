@@ -801,6 +801,269 @@ mysql> select ename from emp where ename like '_a%';
 
 
 
+### 数据排序
+
+---
+
+
+
+#### 升序排列
+
+---
+
+示例
+
+```sql
+#示例：展出员工的薪资和名字，并且按照员工的工资升序排序；
+#方式1：使用`order by`关键字，默认是升序排列；
+mysql> select ename,sal from emp order by sal;
+#方式2：添加`asc`关键字，asc代表升序排列；
+mysql> select ename,sal from emp order by sal asc;
+
+#结果
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| SMITH  |  800.00 |
+| JAMES  |  950.00 |
+| ADAMS  | 1100.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| MILLER | 1300.00 |
+| TURNER | 1500.00 |
+| ALLEN  | 1600.00 |
+| CLARK  | 2450.00 |
+| BLAKE  | 2850.00 |
+| JONES  | 2975.00 |
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| KING   | 5000.00 |
++--------+---------+
+```
+
+
+
+#### 降序排列
+
+---
+
+示例
+
+```sql
+#使用`desc`关键字指定降序排列；
+#示例：找出员工名字和其工资，按照工资的降序排列；
+mysql> select ename,sal from emp order by sal desc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
++--------+---------+
+```
+
+
+
+#### 多字段排序
+
+---
+
+示例
+
+```sql
+#多个字段参与排序，`order by`关键字后越靠前的字段优先级越高；
+#示例：找出员工的名字和工资，按照员工的工资降序排列，工资相同的员工按照名字升序排列；
+mysql> select ename,sal from emp order by sal desc,ename asc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| KING   | 5000.00 |
+| FORD   | 3000.00 |
+| SCOTT  | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| MARTIN | 1250.00 |
+| WARD   | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
+```
+
+
+
+#### 按照查询出的字段的顺序排列
+
+---
+
+示例
+
+```sql
+#关键字`oeder by`后面可以指定具体的字段，也可以写查询出的字段的顺序；
+#示例：找出员工的名字和工资，按照员工的工资降序排列；
+mysql> select ename,sal from emp order by 2 desc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| KING   | 5000.00 |
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
++--------+---------+
+#sal语句当中`2`代表的就是要查询的字段`ename,sal`当中的第二个字段(sal)；
+#不建议在实际开发当中使用；
+```
+
+
+
+### 单行处理函数&多行处理函数
+
+---
+
+#### 单行处理函数
+
+---
+
+示例
+
+```sql
+#单行处理函数的特点就是对每一行的字段都处理，输入一行，输出一行;
+#示例1：计算每个员工的年薪(每个月的工资加补贴)；
+mysql> select ename,(sal+comm)*12 as '年薪' from emp;
++--------+----------+
+| ename  | 年薪     |
++--------+----------+
+| SMITH  |     NULL |
+| ALLEN  | 22800.00 |
+| WARD   | 21000.00 |
+| JONES  |     NULL |
+| MARTIN | 31800.00 |
+| BLAKE  |     NULL |
+| CLARK  |     NULL |
+| SCOTT  |     NULL |
+| KING   |     NULL |
+| TURNER | 18000.00 |
+| ADAMS  |     NULL |
+| JAMES  |     NULL |
+| FORD   |     NULL |
+| MILLER |     NULL |
++--------+----------+
+#单行处理函数的特点就是每一行都有输出；
+
+
+#单行处理函数`ifnull()`
+#该函数用于处理字段可能有`NULL`的情况；
+#在示例1中就是由于处理了有空的字段导致整个结果为空；
+#示例1：计算每个员工的年薪(每个月的工资加补贴)；
+mysql> select ename,(sal+ifnull(comm,0))*12 as '年薪' from emp;
++--------+----------+
+| ename  | 年薪     |
++--------+----------+
+| SMITH  |  9600.00 |
+| ALLEN  | 22800.00 |
+| WARD   | 21000.00 |
+| JONES  | 35700.00 |
+| MARTIN | 31800.00 |
+| BLAKE  | 34200.00 |
+| CLARK  | 29400.00 |
+| SCOTT  | 36000.00 |
+| KING   | 60000.00 |
+| TURNER | 18000.00 |
+| ADAMS  | 13200.00 |
+| JAMES  | 11400.00 |
+| FORD   | 36000.00 |
+| MILLER | 15600.00 |
++--------+----------+
+#可以看见处理结果符合我们的要求；
+```
+
+
+
+#### 多行处理函数
+
+---
+
+
+
+多行处理函数一共有以下五个：
+
+| 分组函数 | 作用       |
+| :------- | :--------- |
+| count()  | 统计个数   |
+| min()    | 求取最小值 |
+| max()    | 求取最大值 |
+| avg()    | 求取平均值 |
+| sum()    | 求和       |
+
+
+
+示例
+
+```sql
+#多行处理函数对每一行的字段进行处理后输出一行；
+
+#示例：统计有多少员工；
+mysql> select count(ename) from emp;
+mysql> select count(*) from emp;
+#区别：`count(*)`统计的是总记录条数与字段无关，`count(ename)`统计的是字段`ename`不为空的数据的个数；
+
+#示例：找出哪个员工的工资最低；
+mysql> select min(sal) from emp;
+
+#示例：找出哪个员工的工资最高；
+mysql> select max(sal) from emp;
+
+#示例：找出员工的平均工资；
+mysql> select avg(sal) from emp;
+```
+
+
+
+多行处理函数也能组合使用
+
+```sql
+mysql> select count(*),min(sal),max(comm) from emp;
+```
+
+
+
+重点：
+
+- **多行处理函数自动忽略`NULL`！！！**
+
+- 多行处理函数不能直接写在`where`子句后面；
+
+
+
+### 分组查询
+
+---
+
+
+
 
 
 ## 三、注意事项
@@ -813,3 +1076,4 @@ mysql> select ename from emp where ename like '_a%';
 
    尽管在MySql数据库当中可以使用双引号，但是为了保证sql语句的通用性，建议字符串都使用单引号括起来；
 
+4. 在数据库当中只要数学表达式当中有`NULL`参与，结果必定是`NULL`；

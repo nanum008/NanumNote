@@ -237,3 +237,22 @@ let sum = (a,b){
 - constructor：基于构造函数检测数据类型(也是基于类的方式)
 
 - Object.prototype.toString.call()：检测数据类型最好的办法
+
+
+
+### 数据类型的转换
+
+---
+
+#### 转换为字符型
+
+1+toString()
+
+#### 转换为数字型
+
+---
+
+- 1+‘123’
+- parseInt()函数；
+- parseFloat()函数；
+- Number()函数;

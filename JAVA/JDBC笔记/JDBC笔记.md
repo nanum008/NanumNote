@@ -2,7 +2,7 @@
 
 ## 一、JDBC的本质是什么？
 
-jdbc的本质就是“SUN”公司制定的一套接口，我们JAVA程序员只需要面向这套接口编程即可操作数据库。
+jdbc的本质就是“SUN”公司制定的一套接口，我们JAVA程序员只需要面向这套接口(`规范`)编程即可操作数据库。
 
 ## 二、JDBC开发前的准备工作
 
@@ -83,8 +83,3 @@ public class Test{
 //在加载“conm.mysql.jdbc.Driver”这个类的时候会执行这个类的静态代码块，静态代码块当中有注册驱动的语句。
 Class.forName("conm.mysql.jdbc.Driver");
 ```
-
-
-
-
-

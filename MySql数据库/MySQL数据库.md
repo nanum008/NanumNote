@@ -1,8 +1,10 @@
-# MySql数据库笔记
+# MySQL数据库笔记
 
-## 一、常用命令
+## 一、常用命令(MySQL)
 
-### 1. 登录MySql数据库`root`账户
+**以下命令独属于MySQL数据库，其他数据库不适用！！！！！！！！！**
+
+### 1. 登录MySql数据库(`root`账户)
 
 ---
 
@@ -31,6 +33,15 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql>
 ```
+
+见到上面的欢迎界面就说明登录成功了，欢迎界面主要描述了如下的信息：
+
+-  每行sql命令以`;`或`\g`结束；
+- `Your MySQL connection id is 5`：你的MySQL连接次数是5，也就是说你到目前为止连接了MySQL5次，每连接一次，记录就会增加一次；
+- `Server version: 5.7.14-log MySQL Community Server (GPL)`：你的MySQL版本是社区版5.7.14；
+- 接下来是版权所有：Oracle，MySQ现在是Oracle公司的产品；
+- 通过命令`help`或者`\h`来查看关于MySQL数据库的命令；
+- 通过命令`\c`来结束当前输入的的操作(命令)；
 
 
 
@@ -73,7 +84,6 @@ mysql> show databases;
 | test               |
 | world              |
 +--------------------+
-7 rows in set (0.00 sec)
 ```
 
 
@@ -268,14 +278,17 @@ mysql> select version();
 
 
 
-### 10. 结束一条sql语句
+### 10. 结束一条语句
 
 ---
 
 10.1 命令
 
 ```sql
+#方式1
 \c
+#方式2
+clear
 ```
 
 10.2 示例
@@ -309,7 +322,52 @@ Bye
 
 
 
+### 12. 创建数据库
+
+---
+
+12.1 命令
+
+```sql
+create database 数据库名;
+```
+
+12.2 示例
+
+```sql
+mysql> create database study;
+Query OK, 1 row affected (0.01 sec)
+```
+
+
+
+### 13. 执行SLQ脚本文件
+
+---
+
+sql脚本文件当中的数据量太大的话可以使用`source`命令来初始化数据库；
+
+13.1 命令
+
+```sql
+source  文件路径;
+```
+
+
+
+13.2 示例
+
+```sql
+source 
+```
+
+
+
 ## 二、DQL(数据查询语言)
+
+DQL(数据查询语言)主要用于从数据库查询数据，使用`SELECT`命令来进行查询；
+
+在所有的SQL语句当中`SELECT`查询语句可以说是最复杂的语句了；
 
 ### 简单的查询语句
 
@@ -325,7 +383,7 @@ Bye
 select 字段 from 表名;
 ```
 
-****示例****
+示例
 
 ```sql
 mysql> select ename from emp;
@@ -805,7 +863,7 @@ mysql> select ename from emp where ename like '_a%';
 
 ---
 
-
+当数据被我们从数据库查出来后我们可以再对其进行排序，排序使用的是`order by`命令；
 
 #### 升序排列
 
@@ -936,6 +994,18 @@ mysql> select ename,sal from emp order by 2 desc;
 #sal语句当中`2`代表的就是要查询的字段`ename,sal`当中的第二个字段(sal)；
 #不建议在实际开发当中使用；
 ```
+
+
+
+### 数据去重
+
+---
+
+当我们不希望看到有重复的数据的时候我们就可以使用`distinct`命令来对数据进行去重；
+
+
+
+
 
 
 
@@ -1070,7 +1140,7 @@ mysql> select count(*),min(sal),max(comm) from emp;
 
 1. 每一条SQL语句都是以`;`结束的，不见`;`，sql语句是不会执行的；
 
-2. 字母不区分大小写；
+2. SQL语句不区分大小写；
 
 3. 在MySql当中，字符串用单引号或者双引号括起来都可以，但是在Oracle、Sql Server等数据库当中只能使用单引号；
 

@@ -363,13 +363,23 @@ source
 
 
 
+### 14. 强制退出命令
+
+---
+
+组合键`ctrl+C`可以强制退出当前操作；
+
+
+
+
+
 ## 二、DQL(数据查询语言)
 
 DQL(数据查询语言)主要用于从数据库查询数据，使用`SELECT`命令来进行查询；
 
 在所有的SQL语句当中`SELECT`查询语句可以说是最复杂的语句了；
 
-### 简单的查询语句
+### 1. 简单的查询语句
 
 ---
 
@@ -553,7 +563,7 @@ mysql> select ename,sal * 12 as '年薪' from emp;
 
 
 
-### 条件查询
+### 2. 条件查询
 
 ---
 
@@ -859,7 +869,7 @@ mysql> select ename from emp where ename like '_a%';
 
 
 
-### 数据排序
+### 3. 数据排序
 
 ---
 
@@ -997,7 +1007,7 @@ mysql> select ename,sal from emp order by 2 desc;
 
 
 
-### 数据去重
+### 4. 数据去重
 
 ---
 
@@ -1005,11 +1015,83 @@ mysql> select ename,sal from emp order by 2 desc;
 
 
 
+### 5. 分组查询&having
+
+---
+
+我们可以使用`group by`将字段值相同的记录分为一组，结合分组函数查询；
+
+
+
+- 单个字段分组查询；
+
+```sql
+#查询各个部门的最高薪资；
+mysql> select deptno,max(sal) from emp group by deptno order by deptno;
++--------+----------+
+| deptno | max(sal) |
++--------+----------+
+|     10 |  5000.00 |
+|     20 |  3000.00 |
+|     30 |  2850.00 |
++--------+----------+ 
+
+
+```
+
+
+
+- 多个字段分组查询；
+
+```sql
+#找出每个部门不同工作岗位的最高薪资
+mysql> select deptno,job,max(sal) from emp group by deptno,job order by deptno;
++--------+-----------+----------+
+| deptno | job       | max(sal) |
++--------+-----------+----------+
+|     10 | CLERK     |  1300.00 |
+|     10 | MANAGER   |  2450.00 |
+|     10 | PRESIDENT |  5000.00 |
+|     20 | ANALYST   |  3000.00 |
+|     20 | CLERK     |  1100.00 |
+|     20 | MANAGER   |  2975.00 |
+|     30 | CLERK     |   950.00 |
+|     30 | MANAGER   |  2850.00 |
+|     30 | SALESMAN  |  1600.00 |
++--------+-----------+----------+
+
+
+```
+
+
+
+**注意：**
+
+当一条SQL语句当中有`group by`的话，`select`后面只能写分组函数和参与分组的字段；
+
+
+
+- Having；
+
+having用于对group by分组后的数据进行再次筛选；
+
+```sql
+#找出每个部门的最高薪资，要求显示薪资大于2900的数据；
+#方式一：
+mysql> select deptno,max(sal) from emp group by deptno having max(sal) > 2900;
+#方式二：
+mysql> select deptno,max(sal) from emp where sal > 2900 group by deptno;
+```
+
+两种方式查询到的结果都是一样的，但是方式二的效率更高；在实际使用当中，能用where子句提前筛选就使用where，不能使用where子句筛选再考虑使用having；
 
 
 
 
-### 单行处理函数&多行处理函数
+
+
+
+### 6. 单行处理函数&多行处理函数(分组函数)
 
 ---
 
@@ -1021,6 +1103,7 @@ mysql> select ename,sal from emp order by 2 desc;
 
 ```sql
 #单行处理函数的特点就是对每一行的字段都处理，输入一行，输出一行;
+#单行处理函数的特点就是每一行都有输出；
 #示例1：计算每个员工的年薪(每个月的工资加补贴)；
 mysql> select ename,(sal+comm)*12 as '年薪' from emp;
 +--------+----------+
@@ -1041,7 +1124,7 @@ mysql> select ename,(sal+comm)*12 as '年薪' from emp;
 | FORD   |     NULL |
 | MILLER |     NULL |
 +--------+----------+
-#单行处理函数的特点就是每一行都有输出；
+
 
 
 #单行处理函数`ifnull()`
@@ -1076,9 +1159,7 @@ mysql> select ename,(sal+ifnull(comm,0))*12 as '年薪' from emp;
 
 ---
 
-
-
-多行处理函数一共有以下五个：
+多行处理函数也叫分组函数，可以对每一组当中的所有记录的字段进行处理，一共有以下五个：
 
 | 分组函数 | 作用       |
 | :------- | :--------- |
@@ -1123,14 +1204,31 @@ mysql> select count(*),min(sal),max(comm) from emp;
 重点：
 
 - **多行处理函数自动忽略`NULL`！！！**
-
 - 多行处理函数不能直接写在`where`子句后面；
+- 使用分组函数但是未使用`group by`语句，那么会将`where`子句查询到的记录自动分为一组，输出一行；
 
 
 
-### 分组查询
+### 7. DQL语句执行顺序
 
 ---
+
+一条完整的DQL语句的执行顺序如下：
+
+```sql
+SELECT			5
+	……
+FROM			1
+	……
+WHERE			2
+	……
+GROUP BY		3
+	……
+HAVING			4
+	……
+ORDER BY		6
+	……
+```
 
 
 

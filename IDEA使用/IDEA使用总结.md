@@ -1,4 +1,4 @@
-# 问题总结
+# IDEA使用总结
 
 ## 一、
 
@@ -73,3 +73,30 @@ C:\Users\null'pointer>netsh int ipv4 show dynamicport tcp
 
 
 [参考：](https://bareth.blog.csdn.net/article/details/108465349?utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7ECTRLIST%7Edefault-1.no_search_link)
+
+
+
+## 二、IDEA设置编码方式
+
+### 1. 控制台设置编码方式
+
+---
+
+![](images/setting.png)
+
+
+
+![](images/consle_encoding.png)
+
+
+
+### 2. 文件编码方式
+
+---
+
+![](images/setting.png)
+
+
+
+![](images/file_encoding.png)
+

@@ -1,6 +1,6 @@
 # JDBC笔记
 
-## 常见问题
+## 一、常见问题
 
 - ```java
   Caused by: com.mysql.cj.exceptions.InvalidConnectionAttributeException: The server time zone value   
@@ -15,4 +15,9 @@ Stirng url = "jdbc:mysql://localhost:3306/mydb01?serverTimezone=UTC";
 
 
 
-- 
+## 二、preparedstatement&statement
+
+相较于statement，preparedstatement有以下的优点：
+
+- 解决了SQL注入的安全问题；
+- perparedstatement在执行增删改方面的效率更高；

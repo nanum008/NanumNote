@@ -1,8 +1,6 @@
-#  Android开发笔记
+# 一、Activity篇
 
-## Activity篇
-
-### 生命周期(LifeCycle)
+### 1、生命周期(LifeCycle)
 
 ---
 
@@ -14,7 +12,7 @@
 - `onPause() ` 在Activity不可交互的时候被调用。
 - `onDesdroy()  `在Activity被销毁的时候被调用。
 
-### 绑定ui
+### 2、绑定ui
 
 ---
 
@@ -24,21 +22,19 @@
 
 
 
-### Activity之间的跳转
+### 3、Activity之间的跳转
 
 ---
 
 Activity的跳转分为`隐式跳转`和`显示跳转`两种方式，我们可以根据自己的业务需求选择合适的跳转方式；
 
-#### 显示跳转：
+**1）显示跳转：**
 
-Activity之间的跳转需要调用Activity的`startActivity()`方法来实现，调用`startActivity()`方法需要传入`Intent`对象，我们应该在`Intent`对象当中指明跳转的详细信息；
-
-#### 隐式跳转：
+> Activity之间的跳转需要调用Activity的`startActivity()`方法来实现，调用`startActivity()`方法需要传入`Intent`对象，我们应该在`Intent`对象当中指明跳转的详细信息；
 
 
 
-#### **代码实例**
+- **代码实例**
 
 ```java
 Intent intent = new Intent(MainActivity.this,SecondActivity.class);
@@ -47,13 +43,13 @@ startActivity(intent);
 
 
 
+**2）隐式跳转：**
 
+# 二、Service篇
 
-## Service篇
+# 三、BroadcastReceiver篇
 
-## BroadcastReceiver篇
-
-## ContentProvider篇
+# 四、ContentProvider篇
 
 
 
@@ -79,10 +75,6 @@ startActivity(intent);
 
 什么是alpha图层呢，通俗的说就是让我们的通知栏图标不带颜色。我们不应该关心小图标的设计，因为这是ui设计师 的工作。
 
-
-
-
-
 ## 用户提醒
 
 ### 吐司 Toast
@@ -107,15 +99,15 @@ makeText()方法会创建一个默认的Toast实例，这种方式不能使用se
 
 - **自定义Toast**
 
-  ---
+---
 
-  **基本步骤**
+**基本步骤**
 
-  1. 通过构造方法"Toast(Context context)"获取到Toast的实例。
-  2. 通过"setView(View view)"方法设置Toast的视图内容。
-  3. 通过show()方法使其显示出来。
+1. 通过构造方法"Toast(Context context)"获取到Toast的实例。
+2. 通过"setView(View view)"方法设置Toast的视图内容。
+3. 通过show()方法使其显示出来。
 
-  **代码示例**
+**代码示例**
 
 ```java
 Toast toast = new Toast(MainActivity.this);
@@ -313,7 +305,7 @@ Action Button点击事件监听的监听是通过重写Activity的onOptionsItemS
 
 ## 自定义组合控件
 
-## 问题总结
+# 五、问题总结
 
 ### 1. Android8.0以后无法使用HTTP协议
 

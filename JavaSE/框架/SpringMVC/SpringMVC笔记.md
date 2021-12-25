@@ -4,7 +4,50 @@
 
 **Gradle**
 
-```gradle
+```groovy
+ext {
+    junitVersion = '5.7.1'
+    springVersion = '5.3.12'
+}
+
+dependencies {
+    //单元测试
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    
+
+    //spring
+    implementation("org.springframework:spring-context:${springVersion}")
+    implementation("org.springframework:spring-jdbc:${springVersion}")
+    implementation("org.springframework:spring-aspects:${springVersion}")
+    implementation("org.springframework:spring-webmvc:${springVersion}")
+
+    
+    //mybatis
+    implementation 'org.mybatis:mybatis:3.5.7'
+    implementation 'org.mybatis:mybatis-spring:1.3.2'
+    implementation 'mysql:mysql-connector-java:8.0.27'
+    implementation 'com.alibaba:druid:1.2.6'
+    implementation 'com.github.pagehelper:pagehelper:3.4.2'
+    
+    
+    //jstl
+    implementation 'jstl:jstl:1.2'
+    implementation 'taglibs:standard:1.1.2'
+
+    //lombok
+    implementation 'org.projectlombok:lombok:1.18.22'
+
+    //servlet
+    compileOnly('javax.servlet:javax.servlet-api:4.0.1')
+    
+    //日志记录
+    implementation 'log4j:log4j:1.2.17'
+    
+    //fastjson
+    implementation 'com.alibaba:fastjson:1.2.78'
+
+}
 ```
 
 
@@ -122,8 +165,7 @@
 		<filter-name>CharacterEncodingFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-
-
+    
 </web-app>
 ```
 
@@ -178,7 +220,9 @@
 
 ## 2、静态资源放行
 
-> 
+> SpringMVC的`DispatcherServlet`会拦截所有的请求，如果UrlPatern是`/*`表示拦截所有请求交给Controller处理，如果UrlPatern是`/`表示拦截除了`isp`以外的所有请求交给Controller处理；
+>
+> 如果不对静态资源放行的话，对于jsp以外的请求(静态资源)，服务器会报`404`；
 
 
 
@@ -186,6 +230,7 @@
 
 ```xml
 <!--location:文件实际路径。 mapping：请求的URL地址 -->
+<!--这表示将所有的js、css请求路径转移到WEB-INF下处理-->
 <mvc:resources location="/WEB-INF/js/" mapping="/js/**" />
 <mvc:resources location="/WEB-INF/css/" mapping="/css/**" />
 ```
@@ -199,6 +244,8 @@
 ```
 
 
+
+注意：两种方式不可混合使用，否者路径会有很大问题；
 
 # 五、Controller
 

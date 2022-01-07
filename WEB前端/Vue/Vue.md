@@ -2,7 +2,9 @@
 
 ## 1、`script`标签直接引入
 
-> Vue是一个JavaScript框架，直接用script标签引入即可使用Vue；
+---
+
+Vue是一个JavaScript框架，直接用script标签引入即可使用Vue；
 
 制作原型或学习版本：包含完整的警告和调试模式
 
@@ -22,10 +24,11 @@ ps：`vue.min.js`能带来更加的性能体验；
 
 ## 2、安装Vue Devtools
 
+---
 
-> - 在使用 Vue 时，Vue推荐在浏览器上安装 [Vue Devtools](https://github.com/vuejs/vue-devtools#vue-devtools)。它为我们提供了一个更友好的界面来审查和调试 Vue 应用。
->
-> - 当我们没有安装`Vue Devtools`的时候，使用Vue会在控制台看到如下的提示；
+在使用 Vue 时，Vue推荐在浏览器上安装 [Vue Devtools](https://github.com/vuejs/vue-devtools#vue-devtools)。它为我们提供了一个更友好的界面来审查和调试 Vue 应用。
+
+当我们没有安装`Vue Devtools`的时候，使用Vue会在控制台看到如下的提示；
 
 ```
 Download the Vue Devtools extension for a better development experience:
@@ -102,21 +105,29 @@ See more tips at https://vuejs.org/guide/deployment.html
 >
 > 插值表达式只能将model层的内容插入到HTML标签的标签体当中，即开始标签到结束标签之间的内容才可以使用插值表达式，而HTML元素的属性值不能使用插值表达式；
 
+/-/ 语法格式
+
 ```html
-<a>只有在这里才可以使用插值表达式：{{}}</a>
+<a>只有在这里才可以使用插值表达式：{{ }}</a>
 ```
 
-## 3、v-bind
+## 3、属性绑定（v-bind）
 
 > `v-bind`的作用就是将Vue中model层的数据单向绑定到HTML标签的属性；
 
-**格式**：v-bind:标签的属性名 = "要绑定的引用"；
+/-/ 语法格式
 
-**简写形式：**`v-bind`可以省略不写，即：`:标签的属性名 = "要绑定的引用"`；
+```js
+v-bind:标签的属性名 = "要绑定的引用"；
+---------------------------------------------------
+简写形式：
+:标签的属性名 = "要绑定的引用"；
+注意：冒号不能省略；
+```
 
 
 
-**示例**
+/-/ 示例
 
 ```html
 <div id="root">
@@ -134,13 +145,21 @@ new Vue({
  });
 ```
 
-## 4、v-model
+
+
+## 4、数据双向绑定（v-model）
 
 > 如果说v-bind是将model层的数据插入到html标签的属性值，那么v-model就是将html标签的属性与model层的数据进行双向绑定，视图层的数据变了，model层的数据也会跟着改变，二者互相影响，紧密连接；
 
-**格式**：v-model:标签的属性名 = "要绑定的引用"；
+/-/ 语法格式
 
-**示例：**
+```js
+v-model:标签的属性名 = "要绑定的引用"；
+```
+
+
+
+/-/ 示例
 
 ```html
 <div id="root">
@@ -157,23 +176,32 @@ new Vue({
     });
 ```
 
-通过v-model，视图层的数据与model层(data)的数据进行了紧密相连；以上例子中，我们如果在input标签输入任意内容后，那么model层的content属性值也会随之发生改变，那么也会导致插值表达式的内容发生变化；
+通过v-model，视图层的数据与model层(data)的数据进行了紧密相连；以上例子中，我们如果在input标签输入任意内容后，那么model层content属性值也会随之发生改变，那么也会导致插值表达式的内容发生变化；
 
 
 
-## 5、el$data的两种写法
+## 5、el&data的两种写法
 
-### 1）**el的两种写法：**
+### 5.1、**el的两种写法：**
+
+---
 
 方式一：`el："css选择器"`
 
-方式二：`var v = new Vue( data:……);	v.$mount("css选择器")`
+方式二：
+
+```js
+var v = new Vue( data:……);
+v.$mount("css选择器")
+```
 
 二者的区别就在于方式一是在new Vue实例的时候就对vue的视图层进行绑定，而方式二则可以按需求来绑定视图，比如说创建好vue实例后等个几秒再绑定视图；
 
 
 
-### 2）data的两种写法
+### 5.2、data的两种写法
+
+---
 
 方式一，对象式：`data：{……}`
 
@@ -200,7 +228,7 @@ data(){
 
 ## 6、数据代理
 
-### 1)Objet.defineProperty()
+### 6.1、Objet.defineProperty()
 
 > 该方法可以为一个对象定义(追加)属性；
 >
@@ -230,7 +258,7 @@ Object.defineProperty(person , ' age',{
 
 ```
 
-### 2)数据代理
+### 6.2、数据代理
 
 > 数据代理：通过一个对象代理对另一个对象属性的操作(读/写)；
 
@@ -243,7 +271,7 @@ object.defineProperty(obj2,'x',{
 })
 ```
 
-### 3)Vue中的数据代理
+### 6.3、Vue中的数据代理
 
 > Vue实例中`data的属性`都会通过Object.defineProperty()方法定义到Vue实例对象的属性当中，从而实现数据代理；
 
@@ -266,17 +294,19 @@ object.defineProperty(obj2,'x',{
 
 ## 7、事件处理
 
-### 1）v-on:click
+### 7.1、v-on:click
 
 > 当用户点击时触发对应的事件(函数)；
 
-格式`v-on:click = "事件函数名"`
+/-/ 语法格式
+
+v-on:click = "事件函数名"
 
 简写形式：`@click = "事件函数名"`
 
 
 
-实例：
+/-/ 实例
 
 ```html
     <div id="root">
@@ -321,4 +351,357 @@ object.defineProperty(obj2,'x',{
 | ![image-20211120190449229](C:\Users\nanum008\AppData\Roaming\Typora\typora-user-images\image-20211120190449229.png) |
 
 **ps**：`(event)=>{}`以这种形式定义的函数，在里面使用关键字`this`代表的是`window`，所以在vue里定义的函数不建议使用这种形式；
+
+
+
+## 三、前端工程化
+
+### 1、npm简单使用
+
+---
+
+#### /-/ npm安装模块
+
+---
+
+/-//-/ 本地安装
+
+在项目的根路径下执行以下命令即可；
+
+```shell
+npm install 模块名
+npm i 模块名
+```
+
+
+
+/-//-/ 全局安装
+
+```shell
+npm install --global 模块名 
+npm install -g 模块名
+```
+
+
+
+/-//-/ 安装并记录到属性`dependencies`中
+
+```shell
+npm install 模块名 --save
+npm install 模块名 -S
+```
+
+在后面添加的参数`-S`表示安装模块完成后记录到npm的配置文件：`packge.json`的属性`dependencies`当中；
+
+-S可以省略不写，默认会加上；
+
+
+
+/-//-/ 安装并记录到属性`devDependencies`当中
+
+```shell
+npm install 模块名 --save-dev
+npm install 模块名 -D
+```
+
+在后面添加的参数`-D`表示安装模块完成后记录到npm的配置文件：`packge.json`的属性`devDependencies`当中；
+
+-D和-S之间的区别在于，-D表示只在开发阶段才会用到，而-S表示在开发和部署上线的时候都会用到；
+
+
+
+/-//-/ 查找npm模块
+
+npm的模块信息可以在npm提供的[官方网站](https://www.npmjs.com/)上查找；
+
+
+
+### 2、webpack的简单使用
+
+---
+
+#### /-/ 简单使用webpack打包项目
+
+---
+
+① 在文件`package.json`中配置；
+
+```json
+{
+    ……
+    "scripts" : {
+    	"build" : "webpack"
+	}
+}
+```
+
+② 在项目的根路径下创建文件：`webpack.config.js`，这是webpack的配置文件，进行如下的配置；
+
+```js
+module.exports={
+    // mode用来指定构建模式，可选值：①production、②development
+    // ①production：代表项目部署上线阶段
+    //		--/ 优点：
+    //		，对生成的文件会进行压缩处理（去除换行和空格），这样生成的js文件的体积会缩小很多
+    //		这样网络传输速度快，网页渲染时间短，客户的体验好；
+    //		--/ 缺点
+    // 		压缩处理代码会比development模式花费更多的时间，项目构建慢；
+    // development：代表开发阶段；
+    //		不会对代码进行压缩处理，构建速度快，
+    mode : "develpoment"
+}
+```
+
+③ 在终端输入以下命令即可打包构建项目；
+
+```shell
+npm run build
+```
+
+项目打包构建好之后默认会输出到项目根目录下的dist目录下的文件：`main.js`当中，我们只需要在`html`文件中引入即可；
+
+
+
+#### /-/ 配置打包文件和输出文件
+
+---
+
+/-//-/ webpack打包文件的默认配置
+
+在webpack4.x和5.x版本中，有以下默认的约定：
+
+① 默认的打包文件为：src/index.js；
+
+② 默认的输出文件为：dist/main.js；
+
+
+
+/-//-/ 配置打包文件
+
+在文件`webpack.config.js`中进行如下配置：
+
+```js
+module.exports = {
+    mode : 'development',
+    entry : '打包文件的路径'
+}
+```
+
+
+
+/-//-/ 配置输出文件
+
+在文件`webpack.config.js`中进行如下配置：
+
+```js
+module.exports = {
+    mode : 'development',
+    output : {
+        filename : '输出的文件名',
+        path : '输出路径'
+    }
+}
+```
+
+
+
+/-//-/ 示例
+
+webpack.config.js
+
+```js
+const path = require('path')
+
+module.exports = {
+    mode : 'development',
+    entry : path.join(__dirname , "./src/index.js"),
+    output:{
+        filename:'bundle.js',
+        path:path.join(__dirname,'dist')
+    }
+}
+```
+
+
+
+#### /-/ webpack-dev-server插件
+
+---
+
+/-//-/ 情景
+
+由于我们引入的是webpack打包生成的文件，在我们每一次改动代码后都得执行命令`npm run ……`才能保证新改动的代码生效；这样做非常麻烦，于是我们可以安装插件`webpack-dev-server`来帮助我们：每次改动源代码后，自动运行命令：`npm run ……`为我们打包构建；
+
+
+
+/-//-/ 安装命令
+
+```shell
+npm install webpack-dev-server -D
+```
+
+
+
+/-//-/ 使用`webpack-dev-server`插件
+
+①  `packge.json`配置
+
+```json
+{
+    ……
+     "scripts": {
+    "build": "webpack serve"
+  }
+}
+```
+
+② 执行`npm run build`；
+
+③说明：
+
+执行以上步骤以后当我们修改源代码按下`Ctrl + S`保存，这个插件就会监听到源码的改动，自动的为我们打包构建项目；
+
+该插件会启动一个实时的http服务器，生成的项目的访问路径在：http://127.0.0.1:8080/src/index.html；
+
+这个时候生成的文件并没有放在我们的本地磁盘上，而是在内存当中。这样做是由于我们频繁的改动代码，放在磁盘的话速率会降低，而且频繁的读写磁盘也会影响磁盘的寿命，于是将其放在了内存当中；
+
+我们可以在项目的根目录下访问到该文件，即：http://127.0.0.1:8080/bundle.js
+
+于是我们在html文件中引用该文件的路径也应该变：
+
+```html
+<script src="/bundle.js"></script>
+```
+
+
+
+/-//-/ 更多配置
+
+在webpack.config.js当中，我们可以对该插件进行更多的配置
+
+```js
+{
+    ……
+        devServer:{
+        static:path.join(__dirname),
+        // 配置第一次运行时自动打开浏览器；
+        open:true,
+        // 配置运行的主机地址；
+        host:'127.0.0.1',
+        // 配置主机端口号；
+        port:'80'
+    }
+}
+```
+
+
+
+
+
+/-//-/ 可能会遇到的问题
+
+--/ 访问http://127.0.0.1:8080出现：Can not get /
+
+解决办法：在webpack.config.js中进行如下配置
+
+```js
+const path = require('path')
+module.exports = {
+        devServer:{
+       	 static:path.join(__dirname)
+    }
+}
+```
+
+
+
+#### /-/ html-webpack-plugin插件
+
+---
+
+/-//-/ 作用
+
+将src目录下的html文件复制一份到其他目录下；
+
+将内存当中的
+
+
+
+/-//-/ 安装命令
+
+```shell
+npm install html-webpack-plugin -D
+```
+
+
+
+/-//-/ 配置html-webpack-plugin
+
+`webpack.config.js`
+
+```js
+const path = require('path')
+// 导入html-webpack-plugin插件，得到该插件的构造函数；
+const HtmlPlugin = require('html-webpack-plugin')
+
+//根据构造函数创建该插件的实例；
+const htmlPlugin = new HtmlPlugin({
+    template:'./src/index.html',
+    filename:'./index.html'
+})
+
+module.exports = {
+    mode : 'development',
+    entry : path.join(__dirname , "./src/index.js"),
+    output:{
+        filename:'bundle.js',
+        path:path.join(__dirname,'dist')
+    },
+    devServer:{
+        static:path.join(__dirname)
+    },
+    //在webpack中声明该插件实例，使其生效；
+    plugins:[htmlPlugin]
+}
+```
+
+这样，我们在浏览器输入http://localhost:8080即可访问项目的index.html；
+
+
+
+#### /-/ loader加载器
+
+---
+
+webpack默认只能打包处理js文件，要想处理其他的文件，就得安装并配置对应的loader；
+
+
+
+/-//-/ 示例：
+
+若是项目中使用到了css文件，而不安装css文件的loader的话会报错；
+
+这个时候就得安装模块：
+
+```shell
+npm install style-loader css-loader -D
+```
+
+安装完成之后在文件`webpack.config,js`中进行配置：
+
+```js
+module.exports = {
+    ……
+     module:{
+        rules:[
+            {
+    		//文件类型
+            test:/\.css$/,
+    		//使用何种loader
+            use:['style-loader','css-loader']
+             }
+        ]
+    }
+}
+```
 

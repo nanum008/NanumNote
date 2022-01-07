@@ -1,4 +1,6 @@
-# 一、Spring-IoC
+# Spring框架
+
+## 一、Spring-IoC
 
 ## 1、IoC&DI
 
@@ -58,7 +60,41 @@ Maven坐标：
 
 
 
-## 3、Spring-IoC：基于xml配置
+
+
+## 3、创建bean的三种方式
+
+> Spring创建Bean对象的方法一共有三种；
+>
+> 最常用的是通过set方法创建；
+
+#### 3.1、通过构造方法创建
+
+1、通过无参构造方法创建
+
+```java
+
+```
+
+2、通过有参构造方法创建
+
+```java
+
+```
+
+
+
+#### 3.2、通过set方法创建
+
+#### 3.3、通过工厂方法创建
+
+
+
+4、属性
+
+
+
+## 5、Spring-IoC：基于xml配置
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -311,7 +347,7 @@ removeAbandonedTimeout=900000
 
 
 
-## 4、Spring-IoC：基于注解配置
+## 6、Spring-IoC：基于注解配置
 
 > Spring不仅可以使用xml文件对其进行配置，也可以直接在类中定义注解，以达到配置spring的目的；
 >

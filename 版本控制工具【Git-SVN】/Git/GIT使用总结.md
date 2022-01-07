@@ -45,3 +45,26 @@ git config --list
 - 示例
 
   ![image-20211225170358634](C:\Users\nanum008\AppData\Roaming\Typora\typora-user-images\image-20211225170358634.png)
+
+# 二、添加到暂存区
+
+## 1、添加所有的文件到暂存区
+
+```shell
+git add .
+```
+
+
+
+## 2、添加指定文件到暂存区
+
+- 命令
+
+```shell
+git add 文件名
+```
+
+
+
+- 示例
+

@@ -1,3 +1,5 @@
+# Vue总结
+
 # 一、Vue环境搭建
 
 ## 1、`script`标签直接引入
@@ -45,9 +47,9 @@ https://github.com/vuejs/vue-devtools
 
 
 
-# 二、Vue的简单使用
 
-## 1、入门案例：Hello Vue
+
+## 3、入门案例：Hello Vue
 
 ```html
 <body>
@@ -97,9 +99,12 @@ See more tips at https://vuejs.org/guide/deployment.html
 <script type="text/javascript">Vue.config.productionTip = false;</script>
 ```
 
+# 二、Vue指令
 
 
-## 2、插值表达式
+
+
+## 1、插值表达式
 
 > 插值表达式的作用就是将Vue对象里data属性(对象)的内容(属性)插入到HTML标签当中；
 >
@@ -111,7 +116,7 @@ See more tips at https://vuejs.org/guide/deployment.html
 <a>只有在这里才可以使用插值表达式：{{ }}</a>
 ```
 
-## 3、属性绑定（v-bind）
+## 2、属性绑定（v-bind）
 
 > `v-bind`的作用就是将Vue中model层的数据单向绑定到HTML标签的属性；
 
@@ -147,7 +152,7 @@ new Vue({
 
 
 
-## 4、数据双向绑定（v-model）
+## 3、数据双向绑定（v-model）
 
 > 如果说v-bind是将model层的数据插入到html标签的属性值，那么v-model就是将html标签的属性与model层的数据进行双向绑定，视图层的数据变了，model层的数据也会跟着改变，二者互相影响，紧密连接；
 
@@ -180,9 +185,9 @@ v-model:标签的属性名 = "要绑定的引用"；
 
 
 
-## 5、el&data的两种写法
+## 4、el&data的两种写法
 
-### 5.1、**el的两种写法：**
+### 4.1、**el的两种写法：**
 
 ---
 
@@ -199,7 +204,7 @@ v.$mount("css选择器")
 
 
 
-### 5.2、data的两种写法
+### 4.2、data的两种写法
 
 ---
 
@@ -226,9 +231,9 @@ data(){
 
 
 
-## 6、数据代理
+## 5、数据代理
 
-### 6.1、Objet.defineProperty()
+### 5.1、Objet.defineProperty()
 
 > 该方法可以为一个对象定义(追加)属性；
 >
@@ -258,7 +263,7 @@ Object.defineProperty(person , ' age',{
 
 ```
 
-### 6.2、数据代理
+### 5.2、数据代理
 
 > 数据代理：通过一个对象代理对另一个对象属性的操作(读/写)；
 
@@ -271,7 +276,7 @@ object.defineProperty(obj2,'x',{
 })
 ```
 
-### 6.3、Vue中的数据代理
+### 5.3、Vue中的数据代理
 
 > Vue实例中`data的属性`都会通过Object.defineProperty()方法定义到Vue实例对象的属性当中，从而实现数据代理；
 
@@ -292,9 +297,9 @@ object.defineProperty(obj2,'x',{
 
 
 
-## 7、事件处理
+## 6、事件处理
 
-### 7.1、v-on:click
+### 6.1、v-on:click
 
 > 当用户点击时触发对应的事件(函数)；
 
@@ -352,9 +357,31 @@ v-on:click = "事件函数名"
 
 **ps**：`(event)=>{}`以这种形式定义的函数，在里面使用关键字`this`代表的是`window`，所以在vue里定义的函数不建议使用这种形式；
 
+# 三、模板语法
 
 
-## 三、前端工程化
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 四、Vue组件
+
+
+
+
+
+
+
+# 四、前端工程化
 
 ### 1、npm简单使用
 

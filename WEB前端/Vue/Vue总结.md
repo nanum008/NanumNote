@@ -8,19 +8,17 @@
 
 Vue是一个JavaScript框架，直接用script标签引入即可使用Vue；
 
-制作原型或学习版本：包含完整的警告和调试模式
+- 制作原型或学习版本：可读性好，包含完整的警告和调试模式；
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 ```
 
-生产环境版本：删除了警告
+- 生产环境版本：删除了警告、压缩混淆等，性能更佳，但是可读性差，不利于程序员开发；
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 ```
-
-ps：`vue.min.js`能带来更加的性能体验；
 
 
 
@@ -187,7 +185,7 @@ v-model:标签的属性名 = "要绑定的引用"；
 
 ## 4、el&data的两种写法
 
-### 4.1、**el的两种写法：**
+### 1、**el的两种写法：**
 
 ---
 
@@ -204,7 +202,7 @@ v.$mount("css选择器")
 
 
 
-### 4.2、data的两种写法
+### 2、data的两种写法
 
 ---
 
@@ -299,11 +297,11 @@ object.defineProperty(obj2,'x',{
 
 ## 6、事件处理
 
-### 6.1、v-on:click
+### 1、v-on:click
 
 > 当用户点击时触发对应的事件(函数)；
 
-/-/ 语法格式
+ **语法格式**
 
 v-on:click = "事件函数名"
 
@@ -311,7 +309,7 @@ v-on:click = "事件函数名"
 
 
 
-/-/ 实例
+**示例**
 
 ```html
     <div id="root">
@@ -375,11 +373,94 @@ v-on:click = "事件函数名"
 
 # 四、Vue组件
 
+## 1、组件的创建与使用
+
+###  组件的创建
+
+---/ 
+
+
+
+---/ 单文件组件
+
+单文件组件就是将一个单独的`.vue`文件作为一个Vue组件；
+
+----/ 示例
+
+`nav.vue`
+
+```js
+```
 
 
 
 
 
+### 注册组件
+
+--- 全局注册
+
+```js
+Vue.component(	'组件名'	，Vue组件实例	)
+```
+
+
+
+--- 局部注册
+
+```js
+//	这是一个vue组件实例
+const vue1 = {
+    template:	`<h1>{{msg}}</h1>`,
+    data(){
+        return{
+            msg:'这是一个组件'
+        }
+    }
+}
+
+new Vue({
+    //注册vue组件
+    components:{
+        vue1
+    }
+    ……
+})
+```
+
+
+
+
+
+
+
+
+
+## 2、组件之间的通信
+
+
+
+### 2.1、父子组件之间的通信
+
+
+
+### 2.2、平行组件之间的通信
+
+
+
+
+
+
+
+# 五、插槽
+
+
+
+### 匿名插槽
+
+
+
+### 具名插槽
 
 # 四、前端工程化
 
@@ -387,7 +468,7 @@ v-on:click = "事件函数名"
 
 ---
 
-#### /-/ npm安装模块
+/-/ npm安装模块
 
 ---
 
@@ -447,7 +528,7 @@ npm的模块信息可以在npm提供的[官方网站](https://www.npmjs.com/)上
 
 ---
 
-#### /-/ 简单使用webpack打包项目
+/-/ 简单使用webpack打包项目
 
 ---
 
@@ -489,7 +570,7 @@ npm run build
 
 
 
-#### /-/ 配置打包文件和输出文件
+/-/ 配置打包文件和输出文件
 
 ---
 
@@ -551,7 +632,7 @@ module.exports = {
 
 
 
-#### /-/ webpack-dev-server插件
+/-/ webpack-dev-server插件
 
 ---
 
@@ -642,7 +723,7 @@ module.exports = {
 
 
 
-#### /-/ html-webpack-plugin插件
+/-/ html-webpack-plugin插件
 
 ---
 
@@ -696,7 +777,7 @@ module.exports = {
 
 
 
-#### /-/ loader加载器
+/-/ loader加载器
 
 ---
 
@@ -731,4 +812,10 @@ module.exports = {
     }
 }
 ```
+
+
+
+
+
+# 五、VUe-router
 

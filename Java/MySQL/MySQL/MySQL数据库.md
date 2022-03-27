@@ -1,0 +1,1308 @@
+# MySQL数据库笔记
+
+# 一、常用命令(MySQL)
+
+**以下命令独属于MySQL数据库，其他数据库不适用！！！！！！！！！**
+
+### 1. 登录MySql数据库(`root`账户)
+
+---
+
+1.1 命令
+
+```mysql
+mysql -h主机IP/域名 -uroot -proot账户的密码
+```
+
+1.2 示例
+
+```sql
+C:\Users\null'pointer>mysql -h127.0.0.1 -uroot -p123456
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.14-log MySQL Community Server (GPL)
+
+Copyright (c) 2000, 2016, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+```
+
+见到上面的欢迎界面就说明登录成功了，欢迎界面主要描述了如下的信息：
+
+-  每行sql命令以`;`或`\g`结束；
+- `Your MySQL connection id is 5`：你的MySQL连接次数是5，也就是说你到目前为止连接了MySQL5次，每连接一次，记录就会增加一次；
+- `Server version: 5.7.14-log MySQL Community Server (GPL)`：你的MySQL版本是社区版5.7.14；
+- 接下来是版权所有：Oracle，MySQ现在是Oracle公司的产品；
+- 通过命令`help`或者`\h`来查看关于MySQL数据库的命令；
+- 通过命令`\c`来结束当前输入的的操作(命令)；
+
+
+
+1.3 注意
+
+- 若登录的是本机的MySql数据库可省略主机IP参数；
+
+  ```sql
+  mysql -uroot -p密码
+  ```
+
+  
+
+- 若不想让密码明文显示在doc命令窗口上可在输入`-p`之后回车再输入密码，此时密码就会以`*`的形式显示在屏幕上,达到保密的效果；
+
+  
+
+### 2. 查看已有的数据库
+
+---
+
+2.1 命令 
+
+```sql
+show databases;
+```
+
+2.2 示例
+
+```sql
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sakila             |
+| sys                |
+| test               |
+| world              |
++--------------------+
+```
+
+
+
+### 3. 使用数据库
+
+---
+
+3.1 命令
+
+```sql
+use 数据库名;
+```
+
+3.2 示例
+
+```sql
+mysql> use test;
+Database changed
+```
+
+
+
+### 4. 查看当前使用的数据库
+
+---
+
+4.1 命令
+
+```sql
+select database();
+```
+
+4.2 示例
+
+```sql
+mysql> select database();
++------------+
+| database() |
++------------+
+| test       |
++------------+
+1 row in set (0.00 sec)
+```
+
+
+
+### 5. 查看当前数据库中有哪些表
+
+---
+
+5.1 命令
+
+```sql
+show tables;
+```
+
+5.2 示例
+
+```sql
+mysql> show tables;
++----------------+
+| Tables_in_test |
++----------------+
+| dept           |
+| emp            |
+| salgrade       |
++----------------+
+3 rows in set (0.00 sec)
+```
+
+
+
+### 6. 查看其他数据库中有哪些表
+
+---
+
+**语法格式**
+
+```sql
+show tables from 数据库名;
+```
+
+**示例**
+
+```sql
+mysql> show tables from world;
++-----------------+
+| Tables_in_world |
++-----------------+
+| city            |
+| country         |
+| countrylanguage |
++-----------------+
+```
+
+
+
+### 7. 查看表的结构
+
+---
+
+**语法格式**
+
+```sql
+desc 表名;
+```
+
+**示例**
+
+```sql
+mysql> desc emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| EMPNO    | int(4)      | NO   | PRI | NULL    |       |
+| ENAME    | varchar(10) | YES  |     | NULL    |       |
+| JOB      | varchar(9)  | YES  |     | NULL    |       |
+| MGR      | int(4)      | YES  |     | NULL    |       |
+| HIREDATE | date        | YES  |     | NULL    |       |
+| SAL      | double(7,2) | YES  |     | NULL    |       |
+| COMM     | double(7,2) | YES  |     | NULL    |       |
+| DEPTNO   | int(2)      | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+```
+
+
+
+### 8. 查看创建表的语句
+
+---
+
+**语法格式**
+
+```sql
+show create table 表名;
+```
+
+**示例**
+
+```sql
+mysql> show create table emp;
++-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Table | Create Table                                                                                                                                                                                                                                                                                                                                        |
++-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| emp   | CREATE TABLE `emp` (
+  `EMPNO` int(4) NOT NULL,
+  `ENAME` varchar(10) DEFAULT NULL,
+  `JOB` varchar(9) DEFAULT NULL,
+  `MGR` int(4) DEFAULT NULL,
+  `HIREDATE` date DEFAULT NULL,
+  `SAL` double(7,2) DEFAULT NULL,
+  `COMM` double(7,2) DEFAULT NULL,
+  `DEPTNO` int(2) DEFAULT NULL,
+  PRIMARY KEY (`EMPNO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 |
++-------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+```
+
+
+
+### 9. 查看MySQL的版本号
+
+---
+
+**语法格式**
+
+```sql
+select version();
+```
+
+**示例**
+
+```sql
+mysql> select version();
++------------+
+| version()  |
++------------+
+| 5.7.14-log |
++------------+
+1 row in set (0.00 sec)
+```
+
+
+
+### 10. 结束一条语句
+
+---
+
+**语法格式**
+
+```sql
+#	方式1---------------
+\c
+#	方式2----------------
+clear
+```
+
+**示例**
+
+```sql
+mysql> show create table emp
+    -> \c
+mysql>
+```
+
+
+
+
+
+### 11. 退出MySql数据库
+
+---
+
+**语法格式**
+
+```sql
+exit
+```
+
+**示例**
+
+```sql
+mysql> exit
+Bye
+```
+
+
+
+### 12. 创建数据库
+
+---
+
+**语法格式**
+
+```sql
+create database 数据库名;
+```
+
+
+
+### 13. 执行SQL脚本文件
+
+---
+
+> sql脚本文件当中的数据量太大的话可以使用`source`命令来初始化数据库；
+
+**语法格式**
+
+```sql
+source  文件路径;
+```
+
+
+
+**示例**
+
+```sql
+source D:/oa.sql 
+```
+
+
+
+### 14. 强制退出命令
+
+---
+
+> 组合键`ctrl+C`可以强制退出当前操作；
+
+
+
+
+
+## 二、DQL(数据查询语言)
+
+> DQL(数据查询语言)主要用于从数据库查询数据，使用`SELECT`命令来进行查询；
+>
+> 在所有的SQL语句当中`SELECT`查询语句最复杂，最重要；
+
+### 1、 简单的查询语句
+
+---
+
+#### 查询一个字段
+
+语法
+
+```sql
+select 字段 from 表名;
+```
+
+示例
+
+```sql
+mysql> select ename from emp;
++--------+
+| ename  |
++--------+
+| SMITH  |
+| ALLEN  |
+| WARD   |
+| JONES  |
+| MARTIN |
+| BLAKE  |
+| CLARK  |
+| SCOTT  |
+| KING   |
+| TURNER |
+| ADAMS  |
+| JAMES  |
+| FORD   |
+| MILLER |
++--------+
+15 rows in set (0.00 sec)
+```
+
+
+
+
+
+#### 查询多个字段
+
+---
+
+语法
+
+```sql
+select 字段1，字段2，字段3，…… from 表名;
+```
+
+示例
+
+```sql
+mysql> select ename,sal,job from emp;
++--------+---------+-----------+
+| ename  | sal     | job       |
++--------+---------+-----------+
+| SMITH  |  800.00 | CLERK     |
+| ALLEN  | 1600.00 | SALESMAN  |
+| WARD   | 1250.00 | SALESMAN  |
+| JONES  | 2975.00 | MANAGER   |
+| MARTIN | 1250.00 | SALESMAN  |
+| BLAKE  | 2850.00 | MANAGER   |
+| CLARK  | 2450.00 | MANAGER   |
+| SCOTT  | 3000.00 | ANALYST   |
+| KING   | 5000.00 | PRESIDENT |
+| TURNER | 1500.00 | SALESMAN  |
+| ADAMS  | 1100.00 | CLERK     |
+| JAMES  |  950.00 | CLERK     |
+| FORD   | 3000.00 | ANALYST   |
+| MILLER | 1300.00 | CLERK     |
++--------+---------+-----------+
+15 rows in set (0.00 sec)
+```
+
+
+
+#### 查询全部字段
+
+---
+
+**语法格式**
+
+```sql
+select * from 表名;
+```
+
+注意：`*`表示查询所有字段，在实际开发当中不建议使用，因为效率较低;
+
+
+
+示例
+
+```sql
+mysql> select * from emp;
++-------+--------+-----------+------+------------+---------+---------+--------+
+| EMPNO | ENAME  | JOB       | MGR  | HIREDATE   | SAL     | COMM    | DEPTNO |
++-------+--------+-----------+------+------------+---------+---------+--------+
+|  7369 | SMITH  | CLERK     | 7902 | 1980-12-17 |  800.00 |    NULL |     20 |
+|  7499 | ALLEN  | SALESMAN  | 7698 | 1981-02-20 | 1600.00 |  300.00 |     30 |
+|  7521 | WARD   | SALESMAN  | 7698 | 1981-02-22 | 1250.00 |  500.00 |     30 |
+|  7566 | JONES  | MANAGER   | 7839 | 1981-04-02 | 2975.00 |    NULL |     20 |
+|  7654 | MARTIN | SALESMAN  | 7698 | 1981-09-28 | 1250.00 | 1400.00 |     30 |
+|  7698 | BLAKE  | MANAGER   | 7839 | 1981-05-01 | 2850.00 |    NULL |     30 |
+|  7782 | CLARK  | MANAGER   | 7839 | 1981-06-09 | 2450.00 |    NULL |     10 |
+|  7788 | SCOTT  | ANALYST   | 7566 | 1987-04-19 | 3000.00 |    NULL |     20 |
+|  7839 | KING   | PRESIDENT | NULL | 1981-11-17 | 5000.00 |    NULL |     10 |
+|  7844 | TURNER | SALESMAN  | 7698 | 1981-09-08 | 1500.00 |    0.00 |     30 |
+|  7876 | ADAMS  | CLERK     | 7788 | 1987-05-23 | 1100.00 |    NULL |     20 |
+|  7900 | JAMES  | CLERK     | 7698 | 1981-12-03 |  950.00 |    NULL |     30 |
+|  7902 | FORD   | ANALYST   | 7566 | 1981-12-03 | 3000.00 |    NULL |     20 |
+|  7934 | MILLER | CLERK     | 7782 | 1982-01-23 | 1300.00 |    NULL |     10 |
++-------+--------+-----------+------+------------+---------+---------+--------+
+15 rows in set (0.00 sec)
+```
+
+
+
+#### 对查询出的字段重命名
+
+---
+
+语法
+
+```sql
+select 字段 as 重命名后的字段 from 表名; 
+```
+
+示例
+
+```sql
+mysql> select ename as 'name',sal as "薪资" from emp;
++--------+---------+
+| name   | 薪资    |
++--------+---------+
+| SMITH  |  800.00 |
+| ALLEN  | 1600.00 |
+| WARD   | 1250.00 |
+| JONES  | 2975.00 |
+| MARTIN | 1250.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| SCOTT  | 3000.00 |
+| KING   | 5000.00 |
+| TURNER | 1500.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| FORD   | 3000.00 |
+| MILLER | 1300.00 |
++--------+---------+
+15 rows in set (0.00 sec)
+```
+
+ps：
+
+- 重命名的字段如果是`中文`需要用`单引号`或者`双引号`括起来；
+
+- 用引号括起来字符的表示这是一个字符串；
+- 标准的sql语句中字符串**必须使用单引号括起来**；
+- 起别名的时候`as`关键字可以省略；
+
+​		
+
+#### 对查询出的数值字段进行数学运算
+
+---
+
+语法：
+
+```sql
+select 数值字段 运算符 运算值 from 表名;
+```
+
+示例：
+
+```sql
+mysql> select ename,sal * 12 as '年薪' from emp;
+```
+
+
+
+### 2、条件查询
+
+---
+
+条件查询需要使用`where`关键字，where必须放在from关键字的后面；
+
+条件查询支持的运算符如下：
+
+|     运算符     |                      说明                      |
+| :------------: | :--------------------------------------------: |
+|       =        |                      等于                      |
+|     <>&!=      |                     不等于                     |
+|       <        |                      小于                      |
+|       >        |                      大于                      |
+|       >=       |                    大于等于                    |
+|       <=       |                    小于等于                    |
+| between……and…… |        在两个值之间，等同于`>= and <=`         |
+|    is null     |         是否为`null`,is not null不为空         |
+|      and       |                      并且                      |
+|       or       |                      或者                      |
+|       in       |              包含，相当于多个`or`              |
+|      not       | not用于取非，主要用在`is not null`或`not in`中 |
+|      like      |      `like`成为模糊查询，支持`%`或`_`匹配      |
+
+
+
+基本语法：
+
+```sql
+select 字段1,字段2,…… from 表名 where 条件;
+```
+
+
+
+#### 运算符：`=`、`>`、`>=`、`<`、`<=`
+
+---
+
+示例
+
+```sql
+#示例1：查询工资等于5000的员工；
+mysql> select ename,job from emp where sal = 5000;
+
+#示例2：查询SMITH的职位和工资；
+mysql> select job,sal from emp where ename = 'SMITH';
+
+#示例3：查询工资大于等于3000的员工；
+mysql> select ename,job,sal from emp where sal >= 3000;
+```
+
+
+
+#### 运算符：`<>`&`!=`
+
+---
+
+示例
+
+```sql
+#示例1：找出工资不等于3000的员工
+mysql> select ename,sal from emp where sal <> 3000;
+```
+
+
+
+#### 运算符：`between …… and ……`
+
+---
+
+示例
+
+```sql
+#找出薪资在2000到3000之间的员工；
+mysql> select ename,job,sal from emp where sal between 2000 and 3000;
+```
+
+注意
+
+1. between ……and……相当于>= and <=,类似于数学当中的闭区间(`[]`)；
+2. `and`左边的数必须小于右边的数！
+3. 该运算符可以运用在字符方面(几乎用不到)
+
+
+
+#### 运算符：`is null`&`is not null`
+
+---
+
+- 在数据库当中，`NULL`不是一个值，代表什么也没有，为`空`；
+
+- `空`不是一个值，不能用等号衡量！！！
+
+- 必须使用`is null`或者`is not null`;
+
+
+
+示例
+
+```sql
+#找出那些人津贴不为NULL；
+mysql> select ename,sal,comm  from emp where comm is not null;
++--------+---------+---------+
+| ename  | sal     | comm    |
++--------+---------+---------+
+| ALLEN  | 1600.00 |  300.00 |
+| WARD   | 1250.00 |  500.00 |
+| MARTIN | 1250.00 | 1400.00 |
+| TURNER | 1500.00 |    0.00 |
++--------+---------+---------+
+4 rows in set (0.00 sec)
+```
+
+注意：`NULL`在数据库当中不是一个值，所以不能用`=`、`!=`运算符进行比较，只能使用`is null`&`is not null`；
+
+
+
+#### 运算符：`and`&`or`
+
+---
+
+`and`和`or`分开使用
+
+```sql
+#示例1：找出工资在1000到3000之间的员工；
+mysql> select ename,sal from emp where sal >=1000 and sal <=3000;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| ALLEN  | 1600.00 |
+| WARD   | 1250.00 |
+| JONES  | 2975.00 |
+| MARTIN | 1250.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| SCOTT  | 3000.00 |
+| TURNER | 1500.00 |
+| ADAMS  | 1100.00 |
+| FORD   | 3000.00 |
+| MILLER | 1300.00 |
++--------+---------+
+12 rows in set (0.00 sec)
+
+#示例2：找出那些员工没有津贴；
+mysql> select ename,comm from emp where comm is null or comm = 0;
++--------+------+
+| ename  | comm |
++--------+------+
+| 张三   | NULL |
+| SMITH  | NULL |
+| JONES  | NULL |
+| BLAKE  | NULL |
+| CLARK  | NULL |
+| SCOTT  | NULL |
+| KING   | NULL |
+| TURNER | 0.00 |
+| ADAMS  | NULL |
+| JAMES  | NULL |
+| FORD   | NULL |
+| MILLER | NULL |
++--------+------+
+12 rows in set (0.01 sec)
+```
+
+
+
+`and`与`or`联合使用
+
+```sql
+#示例：找出工资大于1000并且部门编号是20或30的员工；
+mysql> select ename,sal,deptno from emp where sal >1000 and deptno =20 or deptno = 30;
++--------+---------+--------+
+| ename  | sal     | deptno |
++--------+---------+--------+
+| ALLEN  | 1600.00 |     30 |
+| WARD   | 1250.00 |     30 |
+| JONES  | 2975.00 |     20 |
+| MARTIN | 1250.00 |     30 |
+| BLAKE  | 2850.00 |     30 |
+| SCOTT  | 3000.00 |     20 |
+| TURNER | 1500.00 |     30 |
+| ADAMS  | 1100.00 |     20 |
+| JAMES  |  950.00 |     30 |
+| FORD   | 3000.00 |     20 |
++--------+---------+--------+
+10 rows in set (0.00 sec)
+#可以看到员工`JAMES`的工资小于1000，部门编号是30，但是出现在了查询结果集里了，没有达到预期的要求；
+#这是因为`and`的优先级要高于`or`，所以`sal >100 and deptno =20`先配对执行了，然后再执行的`or`语句；
+#我们可以通过对or语句加`()`的方式来提升其优先级：
+mysql> select ename,sal,deptno from emp where sal >1000 and (deptno =20 or deptno = 30);
++--------+---------+--------+
+| ename  | sal     | deptno |
++--------+---------+--------+
+| ALLEN  | 1600.00 |     30 |
+| WARD   | 1250.00 |     30 |
+| JONES  | 2975.00 |     20 |
+| MARTIN | 1250.00 |     30 |
+| BLAKE  | 2850.00 |     30 |
+| SCOTT  | 3000.00 |     20 |
+| TURNER | 1500.00 |     30 |
+| ADAMS  | 1100.00 |     20 |
+| FORD   | 3000.00 |     20 |
++--------+---------+--------+
+9 rows in set (0.00 sec)
+#这样括号里的or语句就先执行了，查询结果符合我们的要求；
+```
+
+
+
+注意：当运算符的优先级不确定的时候可以加`()`来提升其优先级；
+
+
+
+#### 运算符：`in`&`not in`
+
+---
+
+运算符`in`等同于`or`是`在这几个值当中的意思`，在执行效率上和`or`没有区别；
+
+```sql
+#示例：找出工作岗位是MANAGER或SALESMAN的员工；
+#方式1
+mysql> select ename,job from emp where job = 'salesman' or job = 'manager';
++--------+----------+
+| ename  | job      |
++--------+----------+
+| ALLEN  | SALESMAN |
+| WARD   | SALESMAN |
+| JONES  | MANAGER  |
+| MARTIN | SALESMAN |
+| BLAKE  | MANAGER  |
+| CLARK  | MANAGER  |
+| TURNER | SALESMAN |
++--------+----------+
+7 rows in set (0.00 sec)
+#方式2
+mysql> select ename,job from emp where job in ('salesman','manager');
++--------+----------+
+| ename  | job      |
++--------+----------+
+| ALLEN  | SALESMAN |
+| WARD   | SALESMAN |
+| JONES  | MANAGER  |
+| MARTIN | SALESMAN |
+| BLAKE  | MANAGER  |
+| CLARK  | MANAGER  |
+| TURNER | SALESMAN |
++--------+----------+
+7 rows in set (0.00 sec)
+#可以发现二者查询的结果一模一样
+```
+
+注意：`字段 in (1000,2000)`并不等同于`字段 >= 1000 and 字段 <= 2000 `，而是等同于`字段 = 1000 or 字段 = 2000`；
+
+​			**括号里的值不是代表一个区间，注意区分**；
+
+
+
+`not in`：不在这几个值当中；
+
+```sql
+#示例：找出工作岗位不是MANAGER或SALESMAN的员工；
+mysql> select ename,job from emp where job not in ('manager','salesman');
++--------+-----------+
+| ename  | job       |
++--------+-----------+
+| SMITH  | CLERK     |
+| SCOTT  | ANALYST   |
+| KING   | PRESIDENT |
+| ADAMS  | CLERK     |
+| JAMES  | CLERK     |
+| FORD   | ANALYST   |
+| MILLER | CLERK     |
++--------+-----------+
+8 rows in set (0.00 sec)
+```
+
+
+
+#### 模糊查询`like`
+
+---
+
+- `like`用于模糊查询，比如需求`找出姓李的员工`就需要使用到`like`关键字；
+- 模糊查询时`_`代表一个字符，`%`代表多个字符；
+- 如有特殊需求，可以在`_` 、`%`前面加反斜杠对其进行转义；
+
+
+
+示例
+
+```sql
+#示例：找出名字中第二个字母是'a'的员工；
+mysql> select ename from emp where ename like '_a%';
++--------+
+| ename  |
++--------+
+| WARD   |
+| MARTIN |
+| JAMES  |
++--------+
+3 rows in set (0.01 sec)
+```
+
+
+
+### 3、数据排序
+
+---
+
+当数据被我们从数据库查出来后我们可以再对其进行排序，排序使用的是`order by`命令；
+
+**升序排列**
+
+---
+
+示例
+
+```sql
+#示例：展出员工的薪资和名字，并且按照员工的工资升序排序；
+#方式1：使用`order by`关键字，默认是升序排列；
+mysql> select ename,sal from emp order by sal;
+#方式2：添加`asc`关键字，asc代表升序排列；
+mysql> select ename,sal from emp order by sal asc;
+
+#结果
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| SMITH  |  800.00 |
+| JAMES  |  950.00 |
+| ADAMS  | 1100.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| MILLER | 1300.00 |
+| TURNER | 1500.00 |
+| ALLEN  | 1600.00 |
+| CLARK  | 2450.00 |
+| BLAKE  | 2850.00 |
+| JONES  | 2975.00 |
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| KING   | 5000.00 |
++--------+---------+
+```
+
+
+
+**降序排列**
+
+---
+
+示例
+
+```sql
+#使用`desc`关键字指定降序排列；
+#示例：找出员工名字和其工资，按照工资的降序排列；
+mysql> select ename,sal from emp order by sal desc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
++--------+---------+
+```
+
+
+
+#### 多字段排序
+
+---
+
+示例
+
+```sql
+#多个字段参与排序，`order by`关键字后越靠前的字段优先级越高；
+#示例：找出员工的名字和工资，按照员工的工资降序排列，工资相同的员工按照名字升序排列；
+mysql> select ename,sal from emp order by sal desc,ename asc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| KING   | 5000.00 |
+| FORD   | 3000.00 |
+| SCOTT  | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| MARTIN | 1250.00 |
+| WARD   | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
+```
+
+
+
+#### **按照查询出的字段的顺序排列**
+
+---
+
+示例
+
+```sql
+#关键字`oeder by`后面可以指定具体的字段，也可以写查询出的字段的顺序；
+#示例：找出员工的名字和工资，按照员工的工资降序排列；
+mysql> select ename,sal from emp order by 2 desc;
++--------+---------+
+| ename  | sal     |
++--------+---------+
+| KING   | 5000.00 |
+| SCOTT  | 3000.00 |
+| FORD   | 3000.00 |
+| JONES  | 2975.00 |
+| BLAKE  | 2850.00 |
+| CLARK  | 2450.00 |
+| ALLEN  | 1600.00 |
+| TURNER | 1500.00 |
+| MILLER | 1300.00 |
+| WARD   | 1250.00 |
+| MARTIN | 1250.00 |
+| ADAMS  | 1100.00 |
+| JAMES  |  950.00 |
+| SMITH  |  800.00 |
++--------+---------+
+#sal语句当中`2`代表的就是要查询的字段`ename,sal`当中的第二个字段(sal)；
+#不建议在实际开发当中使用；
+```
+
+
+
+### 4、数据去重
+
+---
+
+> 当我们不希望看到有重复的数据的时候我们就可以使用`distinct`命令来去除重复的记录；
+
+**语法格式**
+
+```sql
+select distinct	字段1,字段2,…… from table;
+```
+
+**注意**
+
+`distinct`只能出现在所有字段的最前面，表示后面所有的字段联合起来去重；以下SQL是错误的：
+
+```sql
+select name,distinct job from emp;
+```
+
+**案例**
+
+统计岗位的数量：
+
+```sql
+select count(ditinct job)	from emp;
+```
+
+
+
+
+
+### 5、分组查询&having过滤
+
+---
+
+> 我们可以使用`group by`将字段值相同的记录分为一组，结合分组函数查询；
+
+
+
+**单个字段分组查询**
+
+```sql
+#查询各个部门的最高薪资；
+mysql> select deptno,max(sal) from emp group by deptno order by deptno;
++--------+----------+
+| deptno | max(sal) |
++--------+----------+
+|     10 |  5000.00 |
+|     20 |  3000.00 |
+|     30 |  2850.00 |
++--------+----------+ 
+
+
+```
+
+
+
+**多个字段分组查询**
+
+```sql
+#找出每个部门不同工作岗位的最高薪资
+mysql> select deptno,job,max(sal) from emp group by deptno,job order by deptno;
++--------+-----------+----------+
+| deptno | job       | max(sal) |
++--------+-----------+----------+
+|     10 | CLERK     |  1300.00 |
+|     10 | MANAGER   |  2450.00 |
+|     10 | PRESIDENT |  5000.00 |
+|     20 | ANALYST   |  3000.00 |
+|     20 | CLERK     |  1100.00 |
+|     20 | MANAGER   |  2975.00 |
+|     30 | CLERK     |   950.00 |
+|     30 | MANAGER   |  2850.00 |
+|     30 | SALESMAN  |  1600.00 |
++--------+-----------+----------+
+
+
+```
+
+
+
+**注意**
+
+当一条SQL语句当中有`group by`的话，`select`后面只能写分组函数和参与分组的字段；
+
+
+
+**Having过滤**
+
+> having用于对group by分组后的数据进行再次筛选；
+
+```sql
+#找出每个部门的最高薪资，要求显示薪资大于2900的数据；
+#方式一：
+mysql> select deptno,max(sal) from emp group by deptno having max(sal) > 2900;
+#方式二：
+mysql> select deptno,max(sal) from emp where sal > 2900 group by deptno;
+```
+
+两种方式查询到的结果都是一样的，但是方式二的效率更高；在实际使用当中，能用where子句提前筛选就使用where，不能使用where子句筛选再考虑使用having；
+
+
+
+### 6. 单行处理函数&多行处理函数(分组函数)
+
+---
+
+#### 单行处理函数
+
+---
+
+示例
+
+```sql
+#单行处理函数的特点就是对每一行的字段都处理，输入一行，输出一行;
+#单行处理函数的特点就是每一行都有输出；
+#示例1：计算每个员工的年薪(每个月的工资加补贴)；
+mysql> select ename,(sal+comm)*12 as '年薪' from emp;
++--------+----------+
+| ename  | 年薪     |
++--------+----------+
+| SMITH  |     NULL |
+| ALLEN  | 22800.00 |
+| WARD   | 21000.00 |
+| JONES  |     NULL |
+| MARTIN | 31800.00 |
+| BLAKE  |     NULL |
+| CLARK  |     NULL |
+| SCOTT  |     NULL |
+| KING   |     NULL |
+| TURNER | 18000.00 |
+| ADAMS  |     NULL |
+| JAMES  |     NULL |
+| FORD   |     NULL |
+| MILLER |     NULL |
++--------+----------+
+
+
+
+#单行处理函数`ifnull()`
+#该函数用于处理字段可能有`NULL`的情况；
+#在示例1中就是由于处理了有空的字段导致整个结果为空；
+#示例1：计算每个员工的年薪(每个月的工资加补贴)；
+mysql> select ename,(sal+ifnull(comm,0))*12 as '年薪' from emp;
++--------+----------+
+| ename  | 年薪     |
++--------+----------+
+| SMITH  |  9600.00 |
+| ALLEN  | 22800.00 |
+| WARD   | 21000.00 |
+| JONES  | 35700.00 |
+| MARTIN | 31800.00 |
+| BLAKE  | 34200.00 |
+| CLARK  | 29400.00 |
+| SCOTT  | 36000.00 |
+| KING   | 60000.00 |
+| TURNER | 18000.00 |
+| ADAMS  | 13200.00 |
+| JAMES  | 11400.00 |
+| FORD   | 36000.00 |
+| MILLER | 15600.00 |
++--------+----------+
+#可以看见处理结果符合我们的要求；
+```
+
+
+
+#### 多行处理函数
+
+---
+
+多行处理函数也叫分组函数，可以对每一组当中的所有记录的字段进行处理，一共有以下五个：
+
+| 分组函数 | 作用       |
+| :------- | :--------- |
+| count()  | 统计个数   |
+| min()    | 求取最小值 |
+| max()    | 求取最大值 |
+| avg()    | 求取平均值 |
+| sum()    | 求和       |
+
+
+
+示例
+
+```sql
+#多行处理函数对每一行的字段进行处理后输出一行；
+
+#示例：统计有多少员工；
+mysql> select count(ename) from emp;
+mysql> select count(*) from emp;
+#区别：`count(*)`统计的是总记录条数与字段无关，`count(ename)`统计的是字段`ename`不为空的数据的个数；
+
+#示例：找出哪个员工的工资最低；
+mysql> select min(sal) from emp;
+
+#示例：找出哪个员工的工资最高；
+mysql> select max(sal) from emp;
+
+#示例：找出员工的平均工资；
+mysql> select avg(sal) from emp;
+```
+
+
+
+多行处理函数也能组合使用
+
+```sql
+mysql> select count(*),min(sal),max(comm) from emp;
+```
+
+
+
+重点：
+
+- **多行处理函数自动忽略`NULL`！！！**
+- 多行处理函数不能直接写在`where`子句后面；
+- 使用分组函数但是未使用`group by`语句，那么会将`where`子句查询到的记录自动分为一组，输出一行；
+
+
+
+### 7. DQL语句执行顺序
+
+---
+
+一条完整的DQL语句的执行顺序如下：
+
+```sql
+SELECT			5
+	……
+FROM			1
+	……
+WHERE			2
+	……
+GROUP BY		3
+	……
+HAVING			4
+	……
+ORDER BY		6
+	……
+```
+
+
+
+# 三、DML
+
+
+
+
+
+# 四、DDL
+
+
+
+
+
+# 五、约束
+
+## 1、非空约束
+
+
+
+**注意**
+
+非空约束只有列级约束，没有标记约束；
+
+## 2、唯一性约束
+
+> 唯一性约束控制字段不能重复，但是可以为**NULL**；
+
+**语法格式**
+
+```sql
+```
+
+
+
+## 3、主键约束
+
+> 主键约束控制字段不能重复，且能不为**NULL**；
+>
+> 即：**非空不重复**；
+
+**主键的分类**
+
+- 按照主键字段的数量来区分
+  - 单一主键：一个字段作为主键（推荐且常用）
+  - 复合主键：多个字段联合起来为一个主键约束（不推荐）
+    - 不建议使用，因为违背数据库设计三范式，会产生部分依赖；
+- 按照主键的性质来区分
+  - 自然主键：主键值是和业务没有关系的自然数（推荐）
+  - 业务主键：主键值和系统的业务挂钩（不推荐）
+    - 例如：银行卡的卡号作为主键、身份证号作为主键……
+    - 不推荐使用，因为主键值和系统业务挂钩的话，一旦业务发生变化，主键值可能也会随之发生变化。有的时候可能没法变化因为变化后可能会导致主键值重复；
+
+**主键自增**
+
+
+
+**注意**
+
+一张表的主键约束只能有一个；
+
+## 4、外键约束
+
+
+
+# 五、注意事项
+
+1、每一条SQL语句都是以`;`结束的，不见`;`，sql语句不会执行；
+
+2、SQL语句不区分大小写；
+
+3、在MySql当中，字符串用单引号或者双引号括起来都可以，但是在Oracle、Sql Server等数据库当中只能使用单引号；尽管在MySql数据库当中可以使用双引号，但是为了保证sql语句的通用性，建议字符串都使用单引号括起来；
+
+4、在数据库当中只要数学表达式当中有`NULL`参与，结果必定是`NULL`；

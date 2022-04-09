@@ -1,4 +1,4 @@
 # Nanum-Note
 
-> nanum008的个人笔记仓库
+> nanum的笔记本本
 
